@@ -344,8 +344,8 @@ public class NotificationMgr {
                     .setContentText(notificationText)
                     .setContentIntent(pendingIntent)
                     .setColor(res.getColor(R.color.dialer_theme_color))
-                    .setOngoing(carrierConfig.getBoolean(
-                            CarrierConfigManager.KEY_VOICEMAIL_NOTIFICATION_PERSISTENT_BOOL))
+                    .setOngoing(false/*carrierConfig.getBoolean(
+                            CarrierConfigManager.KEY_VOICEMAIL_NOTIFICATION_PERSISTENT_BOOL)*/)
                     .setChannel(NotificationChannelController.CHANNEL_ID_VOICE_MAIL)
                     .setOnlyAlertOnce(isRefresh);
 
