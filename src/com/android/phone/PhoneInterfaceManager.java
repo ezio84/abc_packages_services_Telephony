@@ -179,6 +179,7 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
     private static final int CMD_HANDLE_USSD_REQUEST = 47;
     private static final int CMD_GET_FORBIDDEN_PLMNS = 48;
     private static final int EVENT_GET_FORBIDDEN_PLMNS_DONE = 49;
+    private static final int CMD_SIM_GET_ATR = 50;
 
     /** The singleton instance. */
     private static PhoneInterfaceManager sInstance;
@@ -3886,6 +3887,27 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
         } else {
             return false;
         }
+    }
+
+    public byte[] getAtr() {
+        return getAtrUsingSubId(getDefaultSubscription());
+    }
+
+    @Override
+    public byte[] getAtrUsingSubId(int subId) {
+        if (Binder.getCallingUid() != Process.NFC_UID) {
+            throw new SecurityException("Only Smartcard API may access UICC");
+        }
+        Log.d(LOG_TAG, "SIM_GET_ATR ");
+        String response = (String)sendRequest(CMD_SIM_GET_ATR, null, subId);
+        if (response != null && response.length() != 0) {
+            try{
+                return IccUtils.hexStringToBytes(response);
+            } catch(RuntimeException re) {
+                Log.e(LOG_TAG, "Invalid format of the response string");
+            }
+        }
+        return null;
     }
 
     /**
