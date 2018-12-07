@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.PersistableBundle;
-import android.os.SystemProperties;
 import android.telecom.CallAudioState;
 import android.telecom.ConferenceParticipant;
 import android.telecom.Connection;
@@ -698,10 +697,6 @@ abstract class TelephonyConnection extends Connection implements Holdable {
         // TODO: update TTY mode.
         if (getPhone() != null) {
             getPhone().setEchoSuppressionEnabled();
-
-            if (SystemProperties.getBoolean("ro.telephony.needsMuteByRil", false)) {
-                getPhone().setMute(audioState.isMuted());
-            }
         }
     }
 
